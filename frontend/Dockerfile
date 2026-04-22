@@ -14,3 +14,12 @@
 # Pourquoi multi-stage ? L'image finale ne doit pas contenir Node ni
 # node_modules — juste les fichiers statiques servis par Nginx.
 # ─────────────────────────────────────────────────────────────────────────────
+FROM node:20-alpine3.18
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+FROM nginx:alpine
+COPY --from=0 /app/dist /usr/share/nginx/html
+EXPOSE 8080
