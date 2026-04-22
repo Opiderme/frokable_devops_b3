@@ -26,3 +26,36 @@
 # Rappel : les variables sensibles (SECRET_KEY) ne doivent pas être
 # écrites en dur ici — utilisez un fichier .env (voir .env.example)
 # ─────────────────────────────────────────────────────────────────────────────
+
+# Orchestre les conteneurs MongoDB, backend et frontend
+services:
+
+  # Service MongoDB
+  mongo:
+    image: mongo:7 # Utilise l'image officielle MongoDB
+    ports:
+      - "27017:27017" # Exporte le port 27017
+    volumes:
+      - mongo-data:/data/db # Volume persistant pour les données
+
+  # Service Backend
+  backend:
+    build: ./backend # Build depuis le dossier ./backend
+    ports:
+      - "8000:8000" # Exporte le port 8000
+    env_file:
+      - .env # Variables d'environnement
+    depends_on:
+      - mongo
+
+  # Service Frontend
+  frontend:
+    build: ./frontend # Build depuis le dossier ./frontend
+    ports:
+      - "80:80" # Exporte le port 80
+    depends_on:
+      - backend
+
+# Volume pour les données MongoDB
+volumes:
+  mongo-data:
