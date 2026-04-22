@@ -1,5 +1,7 @@
 # devops-b3
 
+AMICO Alenzo & KELOUA Yanis
+
 Projet support pour le cours DevOps — Bachelor B3.
 
 Stack : **Python/FastAPI** · **React/Vite** · **MongoDB**
